@@ -1,63 +1,58 @@
 package com.learning.core.day6;
-
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.util.TreeSet;
 
-class Book implements Comparable<Book> {
+import java.util.Comparator;
+import java.util.Date;
+import java.util.TreeSet;
+
+class LibraryBook {
     private int bookId;
     private String title;
-    double price;
-    private Date publicationDate;
+    private double price;
     private String author;
+    private Date dateOfPublication;
 
-    public Book(int bookId, String title, double price, String publicationDate, String author) throws ParseException {
+    public LibraryBook(int bookId, String title, double price, String author, Date dateOfPublication) {
         this.bookId = bookId;
         this.title = title;
         this.price = price;
-        this.publicationDate = new SimpleDateFormat("dd/MM/yyyy").parse(publicationDate);
         this.author = author;
+        this.dateOfPublication = dateOfPublication;
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     @Override
     public String toString() {
-        return String.format("%d %s\n%.2f %s\n%s\n", bookId, title, price, author, new SimpleDateFormat("dd/MM/yyyy").format(publicationDate));
-    }
-
-    @Override
-    public int hashCode() {
-        return bookId;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        Book book = (Book) obj;
-        return bookId == book.bookId;
-    }
-
-    @Override
-    public int compareTo(Book otherBook) {
-        return this.author.compareTo(otherBook.author);
+        String bookIdString = String.format("%-6d", bookId);
+        String titleString = String.format("%-20s", title);
+        String priceString = String.format("%-10.2f", price);
+        String authorString = String.format("%-20s", author);
+        String dateString = String.format("%tm/%<td/%<tY", dateOfPublication);
+        return bookIdString + titleString + priceString + authorString + dateString;
     }
 }
-
 public class D06P04 {
-    public static void main(String[] args) throws ParseException {
-        ArrayList<Book> books = new ArrayList<>();
+  public static void main(String[] args) {
+        LibraryBook book1 = new LibraryBook(1001, "Python Learning", 715.0, "Martic C, Brown", new Date(2020 - 1900, 1 - 1, 2));
+        LibraryBook book2 = new LibraryBook(1002, "Modern Mainframe", 295.0, "Sharad", new Date());
+        LibraryBook book3 = new LibraryBook(1003, "Java Programming", 523.0, "Gilad Bracha", new Date(1984 - 1900, 11 - 1, 23));
+        LibraryBook book4 = new LibraryBook(1004, "Read C++", 295.0, "Henry Harvin", new Date(1984 - 1900, 11 - 1, 19));
+        LibraryBook book5 = new LibraryBook(1005, ".Net Platform", 34970.0, "Mark J. Price", new Date(1984 - 1900, 3 - 1, 6));
 
-        books.add(new Book(1003, "Java Programming", 523.0, "23/11/1984", "Gilad Bracha"));
-        books.add(new Book(1004, "Read C++", 0.0, "6/3/1984", "Mark J. Price"));
-        books.add(new Book(1005, "Net Platform", 0.0, "19/11/1984", "Henry Harvin"));
-        books.add(new Book(1001, "Python Learning", 715.0, "2/2/2020", "Martic C. Brown"));
-        books.add(new Book(1002, "Modern Mainframe", 295.0, "19/5/1997", "Sharad"));
+        TreeSet<LibraryBook> bookSet = new TreeSet<>(Comparator.comparing(LibraryBook::getTitle));
 
-        Collections.sort(books);
+        bookSet.add(book1);
+        bookSet.add(book2);
+        bookSet.add(book3);
+        bookSet.add(book4);
+        bookSet.add(book5);
 
-        for (Book book : books) {
+        for (LibraryBook book : bookSet) {
             System.out.println(book);
         }
     }
