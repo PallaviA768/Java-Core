@@ -1,80 +1,54 @@
-
 package com.learning.core.day6;
-
 import java.util.Date;
-import java.util.Objects;
 import java.util.TreeSet;
 
-class Manual implements Comparable<Book>
-{
-	private int Id;
-	private String title;
-	private double price;
-	private Date dOp;
-	private String author;
-	
-	public Manual() {
-		super();
-	}
+class Book implements Comparable<Book> {
+    private int bookId;
+    private String title;
+    private double price;
+    private String author;
+    private Date dateOfPublication;
 
-	public Manual(int Id, String title, double price, Date dOp, String author) {
-		super();
-		this.Id = Id;
-		this.title = title;
-		this.price = price;
-		this.dOp = dOp;
-		this.author = author;
-	}
+    public Book(int bookId, String title, double price, String author, Date dateOfPublication) {
+        this.bookId = bookId;
+        this.title = title;
+        this.price = price;
+        this.author = author;
+        this.dateOfPublication = dateOfPublication;
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(author, Id, dOp, price, title);
-	}
+    @Override
+    public String toString() {
+        String bookIdString = String.format("%-6d", bookId);
+        String titleString = String.format("%-20s", title);
+        String priceString = String.format("%-10.2f", price);
+        String authorString = String.format("%-20s", author);
+        String dateString = String.format("%tm/%<td/%<tY", dateOfPublication);
+        return bookIdString + titleString + priceString + authorString + dateString;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Book other = (Book) obj;
-		return Objects.equals(author, other.author) && Id == other.Id && Objects.equals(dOp, other.dOp)
-				&& Double.doubleToLongBits(price) == Double.doubleToLongBits(other.price)
-				&& Objects.equals(title, other.title);
-	}
-
-	@Override
-	public String toString() {
-		return Id + " " + title + " " + price + " "+ author+"   " 
-				+ dOp.getDate()+"/"+dOp.getMonth()+"/"+dOp.getYear();
-	}
-	
-	@Override
-	public int compareTo(Book o) 
-	{
-		return this.Id - o.Id;
-	}
+    @Override
+    public int compareTo(Book other) {
+        return Integer.compare(this.bookId, other.bookId);
+    }
 }
-@SuppressWarnings("deprecation")
-public class D06P03 
-{
-	public static void main(String[] args) 
-	{
-		TreeSet<Book> b= new TreeSet<>();
-		
-		b.add(new Manual(1001,"Python Learning",715,new Date(2020,2,2),"Martic C. Brown"));
-		b.add(new Manual(1002,"Modern Mainframe",295,new Date(1997,5,19),"Sharad"));
-		b.add(new Manual(1003,"java Programming",523,new Date(1984,11,23),"Gilad Bracha"));
-		b.add(new Manual(1004,"Read C++",295,new Date(1984,11,19),"Henry Harvin"));
-		b.add(new Manual(1005,".Net Platform",3497,new Date(1984,3,6),"Mark J. Price"));
-		
+public class D06P03 {
+  public static void main(String[] args) {
+        Book book1 = new Book(1001, "Python Learning", 715.0, "Martic C, Brown", new Date(2020 - 1900, 1 - 1, 2));
+        Book book2 = new Book(1002, "Modern Mainframe", 295.0, "Sharad", new Date());
+        Book book3 = new Book(1003, "Java Programming", 523.0, "Gilad Bracha", new Date(1984 - 1900, 11 - 1, 23));
+        Book book4 = new Book(1004, "Read C++", 295.0, "Henry Harvin", new Date(1984 - 1900, 11 - 1, 19));
+        Book book5 = new Book(1005, ".Net Platform", 34970.0, "Mark J. Price", new Date(1984 - 1900, 3 - 1, 6));
 
-		for (Book bk : b) 
-		{
-            System.out.println(bk);
+        TreeSet<Book> bookSet = new TreeSet<>();
+        bookSet.add(book1);
+        bookSet.add(book2);
+        bookSet.add(book3);
+        bookSet.add(book4);
+        bookSet.add(book5);
+
+        for (Book book : bookSet) {
+            System.out.println(book);
         }
-	}
-
+    }
 }
